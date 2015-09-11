@@ -9,9 +9,11 @@ class BuildingSerializer(serializers.ModelSerializer):
 
 
 class CrimesSerializer(serializers.ModelSerializer):
+    # building_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    building_id = BuildingSerializer(read_only=True)
 
     class Meta:
         model = Crimes
-        fields = ('crimes_id', 'year_month', 'total', 'total_points', 'bodily_harm_with_fatal_cons',
+        fields = ('crimes_id', 'building_id', 'year_month', 'total', 'total_points', 'bodily_harm_with_fatal_cons',
                   'brigandage', 'drugs', 'extortion', 'fraud', 'grave_and_very_grave', 'hooliganism',
                   'intentional_injury', 'looting', 'murder', 'rape', 'theft')
