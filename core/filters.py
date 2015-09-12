@@ -2,9 +2,12 @@ import django_filters
 from .models import Building
 
 
-class BuildingFilter(django_filters.FilterSet):
-    id = django_filters.NumberFilter(name="building_id", lookup_type="contains")
+class BuildingCoordinatesFilter(django_filters.FilterSet):
+    latitude_less = django_filters.NumberFilter(name="latitude", lookup_type="lte")
+    latitude_greater = django_filters.NumberFilter(name="latitude", lookup_type="gte")
+    longitude_less = django_filters.NumberFilter(name="longitude", lookup_type="lte")
+    longitude_greater = django_filters.NumberFilter(name="longitude", lookup_type="gte")
 
     class Meta:
             model = Building
-            fields = ['building_id']
+            fields = ['latitude_less', 'latitude_greater', 'longitude_less', 'longitude_greater']

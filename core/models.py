@@ -12,6 +12,7 @@ class Building(models.Model):
 class Crimes(models.Model):
     crimes_id = models.IntegerField(primary_key=True)
     building_id = models.ForeignKey(Building, related_name='crimes')
+    # todo: change format to datetime
     year_month = models.CharField(max_length=8)
     total = models.IntegerField(default=0)
     total_points = models.IntegerField(default=0)

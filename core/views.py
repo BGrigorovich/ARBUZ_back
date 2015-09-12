@@ -8,7 +8,7 @@ from rest_framework import filters
 from rest_framework.viewsets import ModelViewSet
 
 from core.models import Building, Crimes
-from core.filters import BuildingFilter
+from core.filters import BuildingCoordinatesFilter
 from core.serializers import BuildingSerializer, CrimesSerializer
 
 
@@ -23,22 +23,11 @@ from core.serializers import BuildingSerializer, CrimesSerializer
 
 
 class BuildingList(generics.ListAPIView):
-# class BuildingList(ModelViewSet):
-    # def get_queryset(self):
-    #     radius = self.request.total
-    #     queryset = Building.objects.all().filter(longitude__lte=3.0-radius).filter(latitude__lte=3.0-radius)
-    #     return queryset
-
-    # def filter_queryset(self, request):
-    #     radius = request.radius
-    #     queryset = Building.objects.all().filter(longitude__lte=3.0-radius).filter(latitude__lte=3.0-radius)
-    #     return queryset
-
-    # queryset = filter_queryset(request=)
-    queryset = Building.objects.all()  # .filter(longitude__lte=3.0).filter(latitude__lte=3.0)
+    queryset = Building.objects.all()
     serializer_class = BuildingSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('longitude', 'latitude', 'number', 'street', 'crimes__total')
+    filter_class = BuildingCoordinatesFilter
 
 
 class BuildingDetail(generics.RetrieveUpdateDestroyAPIView):
