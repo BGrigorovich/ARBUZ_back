@@ -2,18 +2,20 @@ from rest_framework import serializers
 from .models import Building, Crimes
 
 
-class BuildingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Building
-        fields = ('building_id', 'longitude', 'latitude', 'number', 'street')
-
-
 class CrimesSerializer(serializers.ModelSerializer):
-    # building_id = serializers.PrimaryKeyRelatedField(read_only=True)
-    building_id = BuildingSerializer(read_only=True)
+    # building_id = BuildingSerializer(read_only=True)
 
     class Meta:
         model = Crimes
         fields = ('crimes_id', 'building_id', 'year_month', 'total', 'total_points', 'bodily_harm_with_fatal_cons',
                   'brigandage', 'drugs', 'extortion', 'fraud', 'grave_and_very_grave', 'hooliganism',
                   'intentional_injury', 'looting', 'murder', 'rape', 'theft')
+
+
+class BuildingSerializer(serializers.ModelSerializer):
+    crimes = CrimesSerializer(many=True, read_only=True)
+    # crimes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Building
+        fields = ('building_id', 'longitude', 'latitude', 'number', 'street', 'crimes')
