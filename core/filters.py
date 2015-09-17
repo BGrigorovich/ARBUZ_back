@@ -1,5 +1,5 @@
 import django_filters
-from .models import Building
+from .models import Building, Crimes
 
 
 class BuildingCoordinatesFilter(django_filters.FilterSet):
@@ -9,5 +9,13 @@ class BuildingCoordinatesFilter(django_filters.FilterSet):
     longitude_greater = django_filters.NumberFilter(name="longitude", lookup_type="gte")
 
     class Meta:
-            model = Building
-            fields = ['latitude_less', 'latitude_greater', 'longitude_less', 'longitude_greater']
+        model = Building
+        fields = ['latitude_less', 'latitude_greater', 'longitude_less', 'longitude_greater']
+
+
+class CrimesFilter(django_filters.FilterSet):
+    month = django_filters.DateFilter(name="month_year")
+
+    class Meta:
+        model = Crimes
+        fields = ['month']

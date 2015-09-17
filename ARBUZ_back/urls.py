@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from rest_framework import routers
 from core.views import BuildingList, CrimesList, BuildingDetail, CrimesDetail
+from rest_framework.authtoken import views
 
 
 router = routers.DefaultRouter()
@@ -30,10 +31,11 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^building/$', BuildingList.as_view()),
+    # url(r'^crimes/(?P<month>[-\w]+)/building/$', BuildingList.as_view()),
     url(r'^building/(?P<pk>[0-9]+)/$', BuildingDetail.as_view(), name='building-details'),
-    # url(r'^building/r=(?P<radius>[0-9]+)/$', BuildingList.as_view(), name='building-list-radius'),
     url(r'^crimes/$', CrimesList.as_view()),
     url(r'^crimes/(?P<pk>[0-9]+)/$', CrimesDetail.as_view(), name='crimes-details'),
+    url(r'^api-token-auth/', views.obtain_auth_token),
 ]
 
 # urlpatterns = format_suffix_patterns(urlpatterns)

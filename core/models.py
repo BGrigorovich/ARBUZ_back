@@ -1,4 +1,9 @@
 from django.db import models
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
 
 
 class Building(models.Model):
@@ -12,8 +17,7 @@ class Building(models.Model):
 class Crimes(models.Model):
     crimes_id = models.IntegerField(primary_key=True)
     building_id = models.ForeignKey(Building, related_name='crimes')
-    # todo: change format to datetime
-    year_month = models.CharField(max_length=8)
+    year_month = models.DateField(max_length=8)
     total = models.IntegerField(default=0)
     total_points = models.IntegerField(default=0)
     bodily_harm_with_fatal_cons = models.IntegerField(default=0)
@@ -28,3 +32,16 @@ class Crimes(models.Model):
     murder = models.IntegerField(default=0)
     rape = models.IntegerField(default=0)
     theft = models.IntegerField(default=0)
+
+
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+
+    # for user in User.objects.all():
+    #     Token.objects.get_or_create(user=user)
+    if created:
+        Token.objects.create(user=instance)
