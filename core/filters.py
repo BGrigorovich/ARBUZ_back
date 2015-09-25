@@ -12,9 +12,3 @@ class BuildingCoordinatesFilter(django_filters.FilterSet):
         model = Building
         fields = ['latitude_less', 'latitude_greater', 'longitude_less', 'longitude_greater',
                   'longitude', 'latitude', 'number', 'street']
-
-
-class CrimesFilter(django_filters.FilterSet):
-    class Meta:
-        model = Crimes
-        fields = ['month']

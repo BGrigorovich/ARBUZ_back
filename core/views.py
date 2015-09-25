@@ -5,7 +5,7 @@ from rest_framework import filters
 from rest_framework.authentication import BasicAuthentication
 
 from core.models import Building, Crimes
-from core.filters import BuildingCoordinatesFilter, CrimesFilter
+from core.filters import BuildingCoordinatesFilter
 from core.serializers import BuildingSerializer, CrimesSerializer
 
 
@@ -24,6 +24,8 @@ class BuildingList(generics.ListAPIView):
     authentication_classes = (BasicAuthentication,)
     queryset = Building.objects.all()
     serializer_class = BuildingSerializer
+    # filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    # filter_fields = ('longitude', 'latitude', 'number', 'street')
     filter_class = BuildingCoordinatesFilter
 
 
@@ -35,7 +37,6 @@ class BuildingDetail(generics.RetrieveUpdateDestroyAPIView):
 class CrimesList(generics.ListAPIView):
     queryset = Crimes.objects.all()
     serializer_class = CrimesSerializer
-    # filter_class = CrimesFilter
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('building_id', 'year_month', 'total', 'total_points', 'bodily_harm_with_fatal_cons',
                      'brigandage', 'drugs', 'extortion', 'fraud', 'grave_and_very_grave', 'hooliganism',
