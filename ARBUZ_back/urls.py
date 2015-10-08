@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^building/$', BuildingList.as_view()),
     url(r'^building/(?P<pk>[0-9]+)/$', BuildingDetail.as_view(), name='building-details'),
+    url(r'^building/(?P<crimes__year_month>\d{4}-\d{2}-\d{2})/$', BuildingList.as_view(), name='building-month'),
     url(r'^crimes/$', CrimesList.as_view()),
     url(r'^crimes/(?P<pk>[0-9]+)/$', CrimesDetail.as_view(), name='crimes-details'),
     url(r'^api-token-auth/', views.obtain_auth_token),

@@ -1,4 +1,5 @@
-from django_filters import FilterSet
+import datetime
+# from datetime import datetime
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
@@ -7,6 +8,7 @@ from rest_framework.authentication import BasicAuthentication
 from core.models import Building, Crimes
 from core.filters import BuildingCoordinatesFilter
 from core.serializers import BuildingSerializer, CrimesSerializer
+from django.db.models import Q
 
 
 # class BuildingViewSet(viewsets.ModelViewSet):
@@ -22,11 +24,20 @@ from core.serializers import BuildingSerializer, CrimesSerializer
 class BuildingList(generics.ListAPIView):
     pagination_class = PageNumberPagination
     authentication_classes = (BasicAuthentication,)
-    queryset = Building.objects.all()
     serializer_class = BuildingSerializer
-    # filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
-    # filter_fields = ('longitude', 'latitude', 'number', 'street')
     filter_class = BuildingCoordinatesFilter
+    queryset = Building.objects.all()
+    # queryset = Building.objects.get(building_id=1)
+
+    def filter_queryset(self, queryset):
+        if self.request.GET.get('crimes__year_month') is not None:
+            month = datetime.datetime.strptime(self.request.GET.get('crimes__year_month'), '%Y-%m-%d')
+            return queryset.crimes.filter(year_month=month)
+        else:
+            return queryset
+        # return queryset.crimes.filter(year_month=self.kwargs['crimes__year_month'])
+        # return queryset.crimes_set.filter(year_month=self.request.GET.params['month'])
+        # return queryset.crimes.filter(crimes__year_month=self.kwargs['crimes__year_month'])
 
 
 class BuildingDetail(generics.RetrieveUpdateDestroyAPIView):
